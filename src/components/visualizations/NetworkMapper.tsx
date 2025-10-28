@@ -1,17 +1,48 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Line } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Line, Text } from "@react-three/drei";
 import * as THREE from "three";
 
-// Generate network topology
-const generateNetworkData = () => {
-  const layers = [
-    { radius: 3, nodeCount: 12, color: "#a855f7", label: "Input Layer" },
-    { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Hidden Layer" },
-    { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Output Layer" },
-  ];
+// Different use case scenarios
+const useCaseScenarios = [
+  {
+    name: "Request Processing",
+    layers: [
+      { radius: 3, nodeCount: 12, color: "#a855f7", label: "User Input" },
+      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Processing" },
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Response" },
+    ]
+  },
+  {
+    name: "Image Recognition",
+    layers: [
+      { radius: 3, nodeCount: 12, color: "#a855f7", label: "Pixels" },
+      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Features" },
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Classes" },
+    ]
+  },
+  {
+    name: "Language Translation",
+    layers: [
+      { radius: 3, nodeCount: 12, color: "#a855f7", label: "Source Text" },
+      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Encoding" },
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Target Text" },
+    ]
+  },
+  {
+    name: "Anomaly Detection",
+    layers: [
+      { radius: 3, nodeCount: 12, color: "#a855f7", label: "Raw Data" },
+      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Analysis" },
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Anomalies" },
+    ]
+  }
+];
 
-  const nodes: Array<{ position: [number, number, number]; color: string; layer: number; label: string }> = [];
+// Generate network topology
+const generateNetworkData = (scenario: typeof useCaseScenarios[0]) => {
+  const layers = scenario.layers;
+  const nodes: Array<{ position: [number, number, number]; color: string; layer: number }> = [];
   const connections: Array<[number, number]> = [];
 
   layers.forEach((layer, layerIndex) => {
@@ -25,7 +56,6 @@ const generateNetworkData = () => {
         position: [x, y, z],
         color: layer.color,
         layer: layerIndex,
-        label: layer.label,
       });
     }
   });
@@ -46,10 +76,10 @@ const generateNetworkData = () => {
     nodeIndex = nextLayerStart;
   }
 
-  return { nodes, connections, layers };
+  return { nodes, connections };
 };
 
-const NetworkNodes = ({ nodes }: { nodes: Array<{ position: [number, number, number]; color: string; label: string }> }) => {
+const NetworkNodes = ({ nodes }: { nodes: Array<{ position: [number, number, number]; color: string }> }) => {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
@@ -78,7 +108,7 @@ const NetworkConnections = ({
   nodes, 
   connections 
 }: { 
-  nodes: Array<{ position: [number, number, number]; color: string; label: string }>;
+  nodes: Array<{ position: [number, number, number]; color: string }>;
   connections: Array<[number, number]>;
 }) => {
   const groupRef = useRef<THREE.Group>(null);
@@ -110,8 +140,50 @@ const NetworkConnections = ({
   );
 };
 
+const LayerLabels = ({ scenario }: { scenario: typeof useCaseScenarios[0] }) => {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {scenario.layers.map((layer, i) => {
+        const y = i * 1.5 - 1.5;
+        return (
+          <Text
+            key={i}
+            position={[0, y, 0]}
+            fontSize={0.25}
+            color={layer.color}
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {layer.label}
+          </Text>
+        );
+      })}
+    </group>
+  );
+};
+
 export const NetworkMapper = () => {
-  const { nodes, connections, layers } = useMemo(() => generateNetworkData(), []);
+  const [scenarioIndex, setScenarioIndex] = useState(0);
+  const currentScenario = useCaseScenarios[scenarioIndex];
+  const { nodes, connections } = useMemo(() => generateNetworkData(currentScenario), [currentScenario]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScenarioIndex((prev) => (prev + 1) % useCaseScenarios.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="w-full h-[500px] rounded-xl overflow-hidden bg-background/50 border border-border shadow-2xl">
@@ -133,23 +205,12 @@ export const NetworkMapper = () => {
         
         <NetworkConnections nodes={nodes} connections={connections} />
         <NetworkNodes nodes={nodes} />
+        <LayerLabels scenario={currentScenario} />
       </Canvas>
       
       <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur px-4 py-2 rounded-lg border border-border">
-        <p className="text-sm font-semibold">Neural Pathway Mapper</p>
+        <p className="text-sm font-semibold">{currentScenario.name}</p>
         <p className="text-xs text-muted-foreground">Interactive 3D network topology</p>
-      </div>
-
-      <div className="absolute top-4 right-4 space-y-2">
-        {layers.map((layer, i) => (
-          <div key={i} className="flex items-center gap-2 bg-card/80 backdrop-blur px-3 py-1.5 rounded-lg border border-border">
-            <div 
-              className="w-2 h-2 rounded-full" 
-              style={{ backgroundColor: layer.color, boxShadow: `0 0 8px ${layer.color}` }}
-            />
-            <span className="text-xs font-medium">{layer.label}</span>
-          </div>
-        ))}
       </div>
     </div>
   );

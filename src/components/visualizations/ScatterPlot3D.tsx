@@ -1,17 +1,51 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Text } from "@react-three/drei";
 import * as THREE from "three";
 
+// Different use case scenarios that rotate
+const useCaseScenarios = [
+  {
+    name: "Sentiment Analysis",
+    clusters: [
+      { center: [2, 2, 2], color: "#a855f7", size: 0.15, label: "Positive" },
+      { center: [-2, -1, 1], color: "#06b6d4", size: 0.12, label: "Negative" },
+      { center: [1, -2, -2], color: "#ec4899", size: 0.13, label: "Neutral" },
+      { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14, label: "Mixed" },
+    ]
+  },
+  {
+    name: "Document Classification",
+    clusters: [
+      { center: [2, 2, 2], color: "#a855f7", size: 0.15, label: "Technical" },
+      { center: [-2, -1, 1], color: "#06b6d4", size: 0.12, label: "Marketing" },
+      { center: [1, -2, -2], color: "#ec4899", size: 0.13, label: "Legal" },
+      { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14, label: "Creative" },
+    ]
+  },
+  {
+    name: "Topic Modeling",
+    clusters: [
+      { center: [2, 2, 2], color: "#a855f7", size: 0.15, label: "Science" },
+      { center: [-2, -1, 1], color: "#06b6d4", size: 0.12, label: "Business" },
+      { center: [1, -2, -2], color: "#ec4899", size: 0.13, label: "Arts" },
+      { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14, label: "Technology" },
+    ]
+  },
+  {
+    name: "Intent Detection",
+    clusters: [
+      { center: [2, 2, 2], color: "#a855f7", size: 0.15, label: "Question" },
+      { center: [-2, -1, 1], color: "#06b6d4", size: 0.12, label: "Command" },
+      { center: [1, -2, -2], color: "#ec4899", size: 0.13, label: "Statement" },
+      { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14, label: "Feedback" },
+    ]
+  }
+];
+
 // Generate random data points with clusters
-const generateEmbeddingData = (count: number) => {
+const generateEmbeddingData = (count: number, clusters: any[]) => {
   const data = [];
-  const clusters = [
-    { center: [2, 2, 2], color: "#a855f7", size: 0.15, label: "Sentiment Analysis" },
-    { center: [-2, -1, 1], color: "#06b6d4", size: 0.12, label: "Entity Recognition" },
-    { center: [1, -2, -2], color: "#ec4899", size: 0.13, label: "Context Understanding" },
-    { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14, label: "Logical Reasoning" },
-  ];
 
   for (let i = 0; i < count; i++) {
     const cluster = clusters[Math.floor(Math.random() * clusters.length)];
@@ -23,16 +57,15 @@ const generateEmbeddingData = (count: number) => {
       ],
       color: cluster.color,
       size: cluster.size,
-      label: cluster.label,
     };
     data.push(point);
   }
-  return { data, clusters };
+  return data;
 };
 
-const Points = () => {
+const Points = ({ scenario }: { scenario: typeof useCaseScenarios[0] }) => {
   const meshRef = useRef<THREE.Group>(null);
-  const { data } = useMemo(() => generateEmbeddingData(200), []);
+  const data = useMemo(() => generateEmbeddingData(200, scenario.clusters), [scenario]);
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -58,6 +91,35 @@ const Points = () => {
   );
 };
 
+const ClusterLabels = ({ scenario }: { scenario: typeof useCaseScenarios[0] }) => {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.1;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {scenario.clusters.map((cluster, i) => (
+        <Text
+          key={i}
+          position={cluster.center as [number, number, number]}
+          fontSize={0.3}
+          color={cluster.color}
+          anchorX="center"
+          anchorY="middle"
+          outlineWidth={0.02}
+          outlineColor="#000000"
+        >
+          {cluster.label}
+        </Text>
+      ))}
+    </group>
+  );
+};
+
 const Grid = () => {
   return (
     <gridHelper args={[10, 10, "#262638", "#1a1a2e"]} />
@@ -65,7 +127,16 @@ const Grid = () => {
 };
 
 export const ScatterPlot3D = () => {
-  const { data, clusters } = useMemo(() => generateEmbeddingData(200), []);
+  const [scenarioIndex, setScenarioIndex] = useState(0);
+  const currentScenario = useCaseScenarios[scenarioIndex];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScenarioIndex((prev) => (prev + 1) % useCaseScenarios.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="w-full h-[500px] rounded-xl overflow-hidden bg-background/50 border border-border shadow-2xl">
@@ -84,25 +155,14 @@ export const ScatterPlot3D = () => {
         <pointLight position={[10, 10, 10]} intensity={1} color="#a855f7" />
         <pointLight position={[-10, -10, -10]} intensity={0.5} color="#06b6d4" />
         
-        <Points />
+        <Points scenario={currentScenario} />
+        <ClusterLabels scenario={currentScenario} />
         <Grid />
       </Canvas>
       
       <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur px-4 py-2 rounded-lg border border-border">
-        <p className="text-sm font-semibold">3D Embedding Space</p>
+        <p className="text-sm font-semibold">{currentScenario.name}</p>
         <p className="text-xs text-muted-foreground">Drag to rotate • Scroll to zoom</p>
-      </div>
-
-      <div className="absolute top-4 right-4 space-y-2">
-        {clusters.map((cluster, i) => (
-          <div key={i} className="flex items-center gap-2 bg-card/80 backdrop-blur px-3 py-1.5 rounded-lg border border-border">
-            <div 
-              className="w-2 h-2 rounded-full" 
-              style={{ backgroundColor: cluster.color, boxShadow: `0 0 8px ${cluster.color}` }}
-            />
-            <span className="text-xs font-medium">{cluster.label}</span>
-          </div>
-        ))}
       </div>
     </div>
   );

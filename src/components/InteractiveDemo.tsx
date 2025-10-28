@@ -68,19 +68,19 @@ export const InteractiveDemo = () => {
         <div className="mt-12 grid md:grid-cols-4 gap-4 max-w-5xl mx-auto">
           <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
             <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
-              4
+              Unlimited
             </div>
             <div className="text-sm text-muted-foreground">Semantic Clusters</div>
           </div>
           <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
             <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
-              200+
+              Any Scale
             </div>
-            <div className="text-sm text-muted-foreground">Embedding Points</div>
+            <div className="text-sm text-muted-foreground">Data Points</div>
           </div>
           <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
             <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
-              3 Layers
+              Flexible
             </div>
             <div className="text-sm text-muted-foreground">Network Depth</div>
           </div>
