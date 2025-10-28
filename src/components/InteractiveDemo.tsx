@@ -65,18 +65,30 @@ export const InteractiveDemo = () => {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="text-center p-4">
-            <div className="text-3xl font-bold text-primary mb-2">200+</div>
-            <div className="text-sm text-muted-foreground">Data Points Visualized</div>
+        <div className="mt-12 grid md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+          <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
+            <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+              4
+            </div>
+            <div className="text-sm text-muted-foreground">Semantic Clusters</div>
           </div>
-          <div className="text-center p-4">
-            <div className="text-3xl font-bold text-accent mb-2">Real-time</div>
+          <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
+            <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+              200+
+            </div>
+            <div className="text-sm text-muted-foreground">Embedding Points</div>
+          </div>
+          <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
+            <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+              3 Layers
+            </div>
+            <div className="text-sm text-muted-foreground">Network Depth</div>
+          </div>
+          <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
+            <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+              Real-time
+            </div>
             <div className="text-sm text-muted-foreground">Interactive Updates</div>
-          </div>
-          <div className="text-center p-4">
-            <div className="text-3xl font-bold text-primary mb-2">3D</div>
-            <div className="text-sm text-muted-foreground">Immersive Experience</div>
           </div>
         </div>
       </div>

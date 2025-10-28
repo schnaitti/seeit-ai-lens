@@ -7,10 +7,10 @@ import * as THREE from "three";
 const generateEmbeddingData = (count: number) => {
   const data = [];
   const clusters = [
-    { center: [2, 2, 2], color: "#a855f7", size: 0.15 },
-    { center: [-2, -1, 1], color: "#06b6d4", size: 0.12 },
-    { center: [1, -2, -2], color: "#ec4899", size: 0.13 },
-    { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14 },
+    { center: [2, 2, 2], color: "#a855f7", size: 0.15, label: "Sentiment Analysis" },
+    { center: [-2, -1, 1], color: "#06b6d4", size: 0.12, label: "Entity Recognition" },
+    { center: [1, -2, -2], color: "#ec4899", size: 0.13, label: "Context Understanding" },
+    { center: [-1, 2, -1], color: "#8b5cf6", size: 0.14, label: "Logical Reasoning" },
   ];
 
   for (let i = 0; i < count; i++) {
@@ -23,15 +23,16 @@ const generateEmbeddingData = (count: number) => {
       ],
       color: cluster.color,
       size: cluster.size,
+      label: cluster.label,
     };
     data.push(point);
   }
-  return data;
+  return { data, clusters };
 };
 
 const Points = () => {
   const meshRef = useRef<THREE.Group>(null);
-  const data = useMemo(() => generateEmbeddingData(200), []);
+  const { data } = useMemo(() => generateEmbeddingData(200), []);
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -64,6 +65,8 @@ const Grid = () => {
 };
 
 export const ScatterPlot3D = () => {
+  const { data, clusters } = useMemo(() => generateEmbeddingData(200), []);
+
   return (
     <div className="w-full h-[500px] rounded-xl overflow-hidden bg-background/50 border border-border shadow-2xl">
       <Canvas>
@@ -88,6 +91,18 @@ export const ScatterPlot3D = () => {
       <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur px-4 py-2 rounded-lg border border-border">
         <p className="text-sm font-semibold">3D Embedding Space</p>
         <p className="text-xs text-muted-foreground">Drag to rotate • Scroll to zoom</p>
+      </div>
+
+      <div className="absolute top-4 right-4 space-y-2">
+        {clusters.map((cluster, i) => (
+          <div key={i} className="flex items-center gap-2 bg-card/80 backdrop-blur px-3 py-1.5 rounded-lg border border-border">
+            <div 
+              className="w-2 h-2 rounded-full" 
+              style={{ backgroundColor: cluster.color, boxShadow: `0 0 8px ${cluster.color}` }}
+            />
+            <span className="text-xs font-medium">{cluster.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

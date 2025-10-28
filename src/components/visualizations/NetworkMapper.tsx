@@ -6,12 +6,12 @@ import * as THREE from "three";
 // Generate network topology
 const generateNetworkData = () => {
   const layers = [
-    { radius: 3, nodeCount: 12, color: "#a855f7" },
-    { radius: 2, nodeCount: 8, color: "#8b5cf6" },
-    { radius: 1.5, nodeCount: 6, color: "#06b6d4" },
+    { radius: 3, nodeCount: 12, color: "#a855f7", label: "Input Layer" },
+    { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Hidden Layer" },
+    { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Output Layer" },
   ];
 
-  const nodes: Array<{ position: [number, number, number]; color: string; layer: number }> = [];
+  const nodes: Array<{ position: [number, number, number]; color: string; layer: number; label: string }> = [];
   const connections: Array<[number, number]> = [];
 
   layers.forEach((layer, layerIndex) => {
@@ -25,6 +25,7 @@ const generateNetworkData = () => {
         position: [x, y, z],
         color: layer.color,
         layer: layerIndex,
+        label: layer.label,
       });
     }
   });
@@ -45,10 +46,10 @@ const generateNetworkData = () => {
     nodeIndex = nextLayerStart;
   }
 
-  return { nodes, connections };
+  return { nodes, connections, layers };
 };
 
-const NetworkNodes = ({ nodes }: { nodes: Array<{ position: [number, number, number]; color: string }> }) => {
+const NetworkNodes = ({ nodes }: { nodes: Array<{ position: [number, number, number]; color: string; label: string }> }) => {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
@@ -77,7 +78,7 @@ const NetworkConnections = ({
   nodes, 
   connections 
 }: { 
-  nodes: Array<{ position: [number, number, number]; color: string }>;
+  nodes: Array<{ position: [number, number, number]; color: string; label: string }>;
   connections: Array<[number, number]>;
 }) => {
   const groupRef = useRef<THREE.Group>(null);
@@ -110,7 +111,7 @@ const NetworkConnections = ({
 };
 
 export const NetworkMapper = () => {
-  const { nodes, connections } = useMemo(() => generateNetworkData(), []);
+  const { nodes, connections, layers } = useMemo(() => generateNetworkData(), []);
 
   return (
     <div className="w-full h-[500px] rounded-xl overflow-hidden bg-background/50 border border-border shadow-2xl">
@@ -137,6 +138,18 @@ export const NetworkMapper = () => {
       <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur px-4 py-2 rounded-lg border border-border">
         <p className="text-sm font-semibold">Neural Pathway Mapper</p>
         <p className="text-xs text-muted-foreground">Interactive 3D network topology</p>
+      </div>
+
+      <div className="absolute top-4 right-4 space-y-2">
+        {layers.map((layer, i) => (
+          <div key={i} className="flex items-center gap-2 bg-card/80 backdrop-blur px-3 py-1.5 rounded-lg border border-border">
+            <div 
+              className="w-2 h-2 rounded-full" 
+              style={{ backgroundColor: layer.color, boxShadow: `0 0 8px ${layer.color}` }}
+            />
+            <span className="text-xs font-medium">{layer.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
