@@ -8,33 +8,33 @@ const useCaseScenarios = [
   {
     name: "Request Processing",
     layers: [
-      { radius: 3, nodeCount: 12, color: "#a855f7", label: "User Input" },
-      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Processing" },
-      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Response" },
+      { radius: 3, nodeCount: 12, color: "#a855f7"},
+      { radius: 2, nodeCount: 8, color: "#8b5cf6"},
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4"},
     ]
   },
   {
     name: "Image Recognition",
     layers: [
-      { radius: 3, nodeCount: 12, color: "#a855f7", label: "Pixels" },
-      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Features" },
-      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Classes" },
+      { radius: 3, nodeCount: 12, color: "#a855f7"},
+      { radius: 2, nodeCount: 8, color: "#8b5cf6"},
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4"},
     ]
   },
   {
     name: "Language Translation",
     layers: [
-      { radius: 3, nodeCount: 12, color: "#a855f7", label: "Source Text" },
-      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Encoding" },
-      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Target Text" },
+      { radius: 3, nodeCount: 12, color: "#a855f7"},
+      { radius: 2, nodeCount: 8, color: "#8b5cf6"},
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4"},
     ]
   },
   {
     name: "Anomaly Detection",
     layers: [
-      { radius: 3, nodeCount: 12, color: "#a855f7", label: "Raw Data" },
-      { radius: 2, nodeCount: 8, color: "#8b5cf6", label: "Analysis" },
-      { radius: 1.5, nodeCount: 6, color: "#06b6d4", label: "Anomalies" },
+      { radius: 3, nodeCount: 12, color: "#a855f7"},
+      { radius: 2, nodeCount: 8, color: "#8b5cf6"},
+      { radius: 1.5, nodeCount: 6, color: "#06b6d4"},
     ]
   }
 ];
@@ -140,37 +140,37 @@ const NetworkConnections = ({
   );
 };
 
-const LayerLabels = ({ scenario }: { scenario: typeof useCaseScenarios[0] }) => {
-  const groupRef = useRef<THREE.Group>(null);
+// const LayerLabels = ({ scenario }: { scenario: typeof useCaseScenarios[0] }) => {
+//   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
-    }
-  });
+//   useFrame((state) => {
+//     if (groupRef.current) {
+//       groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
+//     }
+//   });
 
-  return (
-    <group ref={groupRef}>
-      {scenario.layers.map((layer, i) => {
-        const y = i * 1.5 - 1.5;
-        return (
-          <Text
-            key={i}
-            position={[0, y, 0]}
-            fontSize={0.25}
-            color={layer.color}
-            anchorX="center"
-            anchorY="middle"
-            outlineWidth={0.02}
-            outlineColor="#000000"
-          >
-            {layer.label}
-          </Text>
-        );
-      })}
-    </group>
-  );
-};
+//   return (
+//     <group ref={groupRef}>
+//       {scenario.layers.map((layer, i) => {
+//         const y = i * 1.5 - 1.5;
+//         return (
+//           <Text
+//             key={i}
+//             position={[0, y, 0]}
+//             fontSize={0.25}
+//             color={layer.color}
+//             anchorX="center"
+//             anchorY="middle"
+//             outlineWidth={0.02}
+//             outlineColor="#000000"
+//           >
+//             {/* {layer.label} */}
+//           </Text>
+//         );
+//       })}
+//     </group>
+//   );
+// };
 
 export const NetworkMapper = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0);
@@ -205,7 +205,7 @@ export const NetworkMapper = () => {
         
         <NetworkConnections nodes={nodes} connections={connections} />
         <NetworkNodes nodes={nodes} />
-        <LayerLabels scenario={currentScenario} />
+        {/* <LayerLabels scenario={currentScenario} /> */}
       </Canvas>
       
       <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur px-4 py-2 rounded-lg border border-border">

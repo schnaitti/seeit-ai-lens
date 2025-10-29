@@ -21,32 +21,32 @@ export const InteractiveDemo = () => {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Explore real-time 3D visualizations of LLM embeddings and neural pathways. 
-            These interactive tools reveal the hidden structure of your AI models.
+            Explore real-time visualizations of embeddings. <br />
+            SeeIT reveals the hidden structure of your models.
           </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="max-w-6xl mx-auto">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
             <TabsTrigger value="scatter" className="text-base">
-              Embedding Space
+              Embedding
             </TabsTrigger>
             <TabsTrigger value="network" className="text-base">
-              Network Mapper
+              Network
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="scatter" className="mt-0">
             <div className="space-y-6">
               <ScatterPlot3D />
-              <div className="bg-card/30 backdrop-blur rounded-lg p-6 border border-border/50">
-                <h3 className="text-lg font-semibold mb-2">3D Embedding Visualization</h3>
-                <p className="text-muted-foreground">
+              {/* <div className="bg-card/30 backdrop-blur rounded-lg p-6 border border-border/50"> */}
+                {/* <h3 className="text-lg font-semibold mb-2">3D Embedding Visualization</h3> */}
+                {/* <p className="text-muted-foreground">
                   Navigate through high-dimensional embedding spaces with intuitive 3D scatter plots. 
                   Each point represents a token or concept, clustered by semantic similarity. 
                   Discover hidden patterns and relationships your model has learned.
-                </p>
-              </div>
+                </p> */}
+              {/* </div> */}
             </div>
           </TabsContent>
 
@@ -74,7 +74,7 @@ export const InteractiveDemo = () => {
           </div>
           <div className="bg-card/30 backdrop-blur border border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-all">
             <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
-              Any Scale
+              Scalable
             </div>
             <div className="text-sm text-muted-foreground">Data Points</div>
           </div>

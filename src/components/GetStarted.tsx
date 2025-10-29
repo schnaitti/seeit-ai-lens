@@ -14,7 +14,7 @@ export const GetStarted = () => {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground mb-12">
-            Join early adopters pushing the boundaries of explainable AI development with SeeIT.
+            Join early adopters pushing the boundaries of explainable model development with SeeIT.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">

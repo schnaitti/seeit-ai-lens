@@ -8,7 +8,7 @@ export const Footer = () => {
               SeeIT
             </div>
             <p className="text-sm text-muted-foreground">
-              Your AI Development Microscope for transparent, trustworthy machine learning.
+              Your model development microscope.
             </p>
           </div>
 

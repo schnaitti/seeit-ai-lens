@@ -4,23 +4,23 @@ import { Eye, Shield, Microscope, Map } from "lucide-react";
 const features = [
   {
     icon: Eye,
-    title: "Visualize Embeddings",
-    description: "Illuminate the high-dimensional world of LLM embeddings with intuitive mapper graphs, clusters, and trajectories. Navigate your model's semantic space visually rather than through opaque numbers or black-box outputs."
+    title: "Interactive Visualizations",
+    description: "Illuminate the high-dimensional world of embeddings with intuitive mapper graphs, clusters, and trajectories. Navigate your model's semantic space visually rather than through opaque numbers or black-box outputs."
   },
   {
     icon: Shield,
     title: "Explain and Verify",
-    description: "Uncover the \"why\" behind your model's answers with explanation agents that analyze node connections and semantic coherence. Apply perturbation-based verification to test robustness and prevent hallucinations or blind-spots."
+    description: "Uncover the \"why\" behind your model with explanation agents that analyze node connections and semantic coherence. Apply perturbation-based verification to test robustness and prevent hallucinations or blind-spots."
   },
   {
     icon: Microscope,
     title: "Debugging Microscope",
-    description: "SeeIT acts as a microscope in your development process, letting you zoom into specific token clusters or decision pathways to pinpoint and resolve unexpected model behaviors."
+    description: "SeeIT acts as a microscope in your development process, letting you zoom into specific layers or decision pathways to pinpoint and resolve unexpected model behaviors."
   },
   {
     icon: Map,
-    title: "Interactive Maps & Plots",
-    description: "Engage with dynamic, interactive plots that bring your model's inner workings to life. Slice, dice, and zoom through layers of complexity while maintaining clarity and control."
+    title: "Seamless Integration",
+    description: "In just a few lines of code, SeeIT integrates with your existing model training pipeline."
   }
 ];
 
@@ -32,11 +32,11 @@ export const Features = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Powerful Features for{" "}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              AI Transparency
+              Model Explainability
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to understand, debug, and improve your AI models
+            Everything you need to understand, debug, and improve your models
           </p>
         </div>
 

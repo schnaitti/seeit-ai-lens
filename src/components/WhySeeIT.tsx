@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Zap, Target, TrendingUp } from "lucide-react";
+import { Zap, Target, TrendingUp, Quote } from "lucide-react";
+import { ProblemSolution } from "@/components/ProblemSolution";
 
 const benefits = [
   {
@@ -21,44 +22,20 @@ const benefits = [
 
 export const WhySeeIT = () => {
   return (
-    <section id="why-seeit" className="py-24 bg-gradient-to-b from-secondary/20 to-background">
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Why Choose{" "}
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              SeeIT?
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-            In the race to innovate AI rapidly, model transparency and trustworthiness are paramount. 
-            SeeIT offers a radically new approach that complements traditional model monitoring tools by 
-            focusing on semantic explanation and direct developer interaction with LLM internals.
-          </p>
-          <p className="text-xl font-semibold text-foreground">
-            By making the invisible visible, SeeIT accelerates debugging cycles, empowers safer AI deployments, 
-            and fuels confident innovation.
-          </p>
+    <section id="why-seeit" className="pt-16 pb-8 bg-gradient-to-b from-secondary/20 to-background">
+        <div className="max-w-5xl mx-auto text-center"> 
+          {/* Quote Card */}
+          <Card className="rounded-3xl p-8 md:p-12 bg-card/60 backdrop-blur border-border/60 shadow-2xl">
+            <div className="space-y-6">
+              <p className="text-2xl md:text-4xl font-semibold leading-snug">
+                "Metrics show <span className="underline underline-offset-4 decoration-2">what</span> happened"
+              </p>
+              <p className="text-2xl md:text-4xl font-semibold leading-snug">
+                <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">"Visualization shows <span className="underline underline-offset-4 decoration-2">why</span>"</span>
+              </p>
+            </div>
+          </Card>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {benefits.map((benefit, index) => {
-            const Icon = benefit.icon;
-            return (
-              <Card 
-                key={index}
-                className="p-8 text-center bg-card/50 backdrop-blur border-border/50 hover:border-primary/50 transition-all"
-              >
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4">
-                  <Icon className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
-                <p className="text-muted-foreground">{benefit.description}</p>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
     </section>
   );
 };
